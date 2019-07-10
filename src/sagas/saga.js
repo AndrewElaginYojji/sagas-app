@@ -1,4 +1,4 @@
-import { takeLatest, put, delay, call, select, take } from 'redux-saga/effects';
+import { takeLatest, put, delay, call, select, take, all, fork } from 'redux-saga/effects';
 import {
 	AGE_UP,
 	AGE_DOWN,
@@ -51,4 +51,20 @@ export function* watchAndLog() {
 		console.log('action', action)
     console.log('state after', state)
 	}
+}
+
+export function* rootSaga() {
+	// ===== 1 option =====
+	// yield all([
+	// 	watchAgeUp(),
+	// 	watchAgeDown(),
+	// 	watchShowUsers(),
+	// 	watchAndLog()
+	// ])
+
+	// ===== 2 option =====
+	yield fork(watchAgeUp)
+	yield fork(watchAgeDown)
+	yield fork(watchShowUsers)
+	yield fork(watchAndLog)
 }
